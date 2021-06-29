@@ -124,8 +124,8 @@ def AddNewList():
     if logosUrl.startswith('http') and not logosUrl.endswith('/'):
         logosUrl += '/'
     epgUrl = '' if listUrl.endswith('.plx') else GetChoice(30046, 30047, 30048, 30047, 30048, 30021, fileType=0)
-    if epgUrl.startswith('http') and not epgUrl.endswith('/'):
-        epgUrl += '/'
+#    if epgUrl.startswith('http') and not epgUrl.endswith('/'):
+#        epgUrl += '/'
     cacheInMinutes = GetNumFromUser(getLocaleString(30034), '0') if listUrl.startswith('http') else 0
     if cacheInMinutes is None:
         cacheInMinutes = 0
