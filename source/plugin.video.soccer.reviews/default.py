@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Writer (c) 2015, Silhouette, E-mail: 
-# Rev. 0.10.0
+# Writer (c) 2022, Silhouette, E-mail: 
+# Rev. 0.1.1
 
 # import pyopenssl
 import xbmcplugin, xbmcgui, xbmcaddon
@@ -305,13 +305,20 @@ def JVS_top():
     xbmcplugin.addDirectoryItem(pluginhandle,
                                 sys.argv[0] + '?mode=gtvlist&url=' +
                                 urllib.parse.quote_plus(gtv_gen_pg), item, True)
-    item = xbmcgui.ListItem('Gooool365.org')
+
     item = xbmcgui.ListItem('Gooool365.org [Обзоры]')
     item.setArt({ 'thumb': icon6_icon, 'icon' : icon6_icon })
     item.setProperty('fanart_image', art2_icon)
     xbmcplugin.addDirectoryItem(pluginhandle,
                                 sys.argv[0] + '?mode=gtvlist&url=' +
                                 urllib.parse.quote_plus(gtv_hl_pg), item, True)
+                                
+    item = xbmcgui.ListItem('Gooool365.org [Разделы]')
+    item.setArt({ 'thumb': icon6_icon, 'icon' : icon6_icon })
+    item.setProperty('fanart_image', art2_icon)
+    xbmcplugin.addDirectoryItem(pluginhandle,
+                                sys.argv[0] + '?mode=gtvctlg&url=' +
+                                urllib.parse.quote_plus(gtv_gen_pg), item, True)                                
                                 
                                 
 #    item = xbmcgui.ListItem('GOALTIME [vk.com/goaltime ]')
@@ -360,6 +367,53 @@ def JVS_top():
 #                                urllib.parse.quote_plus(s24_pg), item, True)
 # https://www.sport-24tv.ru
 
+    xbmcplugin.endOfDirectory(pluginhandle)
+
+def GTV_ctlg(url):
+    dbg_log('-HD7_ctlg:' + '\n')
+    dbg_log('- url:'+  url + '\n')
+
+    catalog =  [
+    
+     ("/news/rus_premier_league/", "Россия"),
+     ("/news/ukrainapremer_liga/", "Украина"),
+     ("/news/angliya_premier_league/", "Англия"),
+     ("/news/ispaniyala_liga_primera/", "Испания"),
+     ("/news/italiyalega_calcio/", "Италия"),
+     ("/news/germaniyabundesliga/", "Германия"),
+     ("/news/francia/", "Франция"),
+     ("/news/drugie_nacionalnye_chempionaty_i_kubki/", "Другие Чемпионаты"),
+     ("/news/tovarischeskie_matchi/", "Товарищеские матчи"),
+     ("/news/futbolnoe_video/", "Передачи"),
+
+     ("/news/evrokubki_2014_2019gg/", "Еврокубки"),
+     ("/news/chempionat_evropy/", "Чемпионат Европы"),
+     ("/news/chempionat_mira/", "Чемпионат Мира"),
+     ("/copa2015/", "Кубок Америки"),
+     ("/news/cup-africa/", "Кубок Африканских Наций"),
+
+     ("/news/nhl_nhl/", "НХЛ"),
+     ("/news/kontinentalnaya_xokkeynaya_liga_kxl/", "КХЛ"),
+     ("/news/mezhdunarodnye_turniry_po_hokkeyu/", "Международные турниры"),
+
+     ("/news/formula_1/", "Формула 1"),
+     ("/news/basketbol/", "Баскетбол"),
+     ("/news/tennis/", "Теннис"),
+     ("/news/edinoborstva/", "Единоборства"),
+     ("/news/zimnie_vidy_sporta/", "Биатлон"),
+     ("/news/olimpiyskie_igry_2012/", "Олимпийские игры"),
+     
+]
+               
+    for ctLink, ctTitle  in catalog:
+        item = xbmcgui.ListItem(ctTitle)
+        item.setArt({ 'thumb': icon6_icon, 'icon' : icon6_icon })
+        item.setProperty('fanart_image', art2_icon)
+        xbmcplugin.addDirectoryItem(pluginhandle,
+                                    sys.argv[0] + '?mode=gtvlist&url=' +
+                                    urllib.parse.quote_plus(gtv_start + ctLink + "page/"), item, True)     
+        item = xbmcgui.ListItem(ctTitle)
+        
     xbmcplugin.endOfDirectory(pluginhandle)
 
 def GTV_list(url, page):
@@ -1210,11 +1264,13 @@ if mode == '':
 elif mode == 'list':
     JVS_list(url, page)
 elif mode == 'gtvlist':
-    GTV_list(url, page)    
+    GTV_list(url, page)
 elif mode == 'gtvshow':
     GTV_show(url, name)
 elif mode == 'gtvplay':
-    GTV_play(url, name)    
+    GTV_play(url, name)
+elif mode == 'gtvctlg':
+    GTV_ctlg(url)
 elif mode == 'vkalb':
     JVS_vkalb(url, oid)
 elif mode == 'pbtvtop':
