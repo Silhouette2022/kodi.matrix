@@ -23,7 +23,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.soccer.reviews" name="Футбольные обзоры 2.0" version="0.1.1" provider-name="Silhouette">
+<addon id="plugin.video.soccer.reviews" name="Футбольные обзоры 2.0" version="0.2.0" provider-name="Silhouette">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.beautifulsoup4" version="4.9.3"/>
