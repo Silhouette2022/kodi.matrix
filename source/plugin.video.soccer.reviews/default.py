@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.2.0
+# Rev. 0.3.0
 
 import xbmcplugin, xbmcgui, xbmcaddon
 import urllib.request, urllib.parse, urllib.error
@@ -22,7 +22,9 @@ icon5_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon5.png'))
 icon6_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon6.png'))
 icon7_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon7.png'))
 art7_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart7.png'))
-dbg = 0
+icon8_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon8.png'))
+art8_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart8.png'))
+dbg = 1
 
 pluginhandle = int(sys.argv[1])
 
@@ -33,6 +35,10 @@ s24_pg = "http://www.sport-24tv.ru"
 gtv_start = "https://gooool365.org"
 gtv_gen_pg = gtv_start + "/page/"
 gtv_hl_pg = gtv_start + "/obzors/page/"
+
+slw_start = "https://www.soccerlive.ws"
+slw_gen_pg = slw_start + "/page/"
+slw_hl_pg = slw_start + "/reviews/page/"
 
 omm_start = "https://ourmatch.me"
 
@@ -103,7 +109,8 @@ def SR_top():
     
     srtops =    [
          ("Gooool365.ORG", "gtvtop", icon6_icon, art2_icon),
-         ("OURMATCH.me", "ommtop", icon7_icon, art7_icon),
+         ("SoccerLive.ws", "slwlist", icon8_icon, art8_icon),
+         ("OURMATCH.me", "ommtop", icon7_icon, art7_icon)
                 ]
                
     for ctTitle, ctMode, ctIcon, ctArt  in srtops:
@@ -125,6 +132,65 @@ def SR_top():
 # https://www.sport-24tv.ru
 
     xbmcplugin.endOfDirectory(pluginhandle)
+
+def SLW_list(url, page):
+    dbg_log('-SLW_list:')
+    dbg_log('- url:' + url)
+    dbg_log('- page:' + page)
+
+    if url == '': url = slw_hl_pg
+    if page == '': page = '1'
+    http = get_url(url + page + '/')
+
+    i = 0
+    nuclears = BeautifulSoup(http, 'html.parser').find_all('div', {'class': 'item nuclear'})
+
+    for nuclear in nuclears:
+        entries = re.compile('<a href="(.*?)".*?src="(.*?)".*?<h2>(.*?)</h2>').findall(str(nuclear).replace('\n', ' '))
+        for href, img, title in entries:
+            dbg_log('-HREF %s' % href)
+            dbg_log('-TITLE %s' % title)
+            dbg_log('-IMG %s' % img)
+            if img[0] == '/':
+                img = slw_start + img
+                dbg_log('-IMG %s' % img)
+
+            uri = sys.argv[0] + '?mode=slwshow' + '&url=' + urllib.parse.quote_plus(href) + '&name=' + urllib.parse.quote_plus(title)
+            add_dir(title, uri, img, art2_icon, True)
+            i = i + 1
+
+    if i:
+        uri = sys.argv[0] + '?mode=slwlist&page=' + str(int(page) + 1) + '&url=' + url
+        add_dir('<NEXT PAGE>', uri, None, plugin_fanart, True)
+
+        uri = sys.argv[0] + '?mode=slwlist&page=' + str(int(page) + 5) + '&url=' + url
+        add_dir('<NEXT PAGE +5>', uri, None, plugin_fanart, isFolder=True)
+
+    xbmcplugin.endOfDirectory(pluginhandle)
+    
+def SLW_show(url, name):
+    dbg_log('-SLW_show:')
+    dbg_log('- url:' + url)
+    dbg_log('- name:' + name)
+
+    http = get_url(url)
+
+    iframes = re.compile('<iframe.*?src="(.*?)"').findall(str(http))
+    dbg_log(str(iframes))
+    if len(iframes) > 0:
+        i = 1
+        for href in iframes:
+            if href[0] == '/':
+                href = slw_start + href
+
+            title = '[%d] %s'%(i,name)
+            uri = sys.argv[0] + '?mode=gtvplay' + '&url=' + urllib.parse.quote_plus(href) + '&name=' + urllib.parse.quote_plus(name)
+            add_dir(title, uri, icon8_icon, art8_icon, True)
+            i = i + 1
+
+    xbmcplugin.endOfDirectory(pluginhandle)
+    
+    
 
 def GTV_top():
     dbg_log('-GTV_top:' + '\n')
@@ -787,6 +853,10 @@ elif mode == 'gtvplay':
     GTV_play(url, name, res)
 elif mode == 'gtvctlg':
     GTV_ctlg(url)
+elif mode == 'slwlist':
+    SLW_list(url, page)
+elif mode == 'slwshow':
+    SLW_show(url, name)
 elif mode == 'ommtop':
     OMM_top()
 elif mode == 'ommlist':
