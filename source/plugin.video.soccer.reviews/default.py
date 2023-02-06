@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.3.0
+# Rev. 0.3.1
 
-import xbmcplugin, xbmcgui, xbmcaddon
+import xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
 import urllib.request, urllib.parse, urllib.error
 import os, re, sys, json
 from bs4 import BeautifulSoup
@@ -14,17 +14,17 @@ plugin_path = __addon__.getAddonInfo('path')
 plugin_icon = __addon__.getAddonInfo('icon')
 plugin_fanart = __addon__.getAddonInfo('fanart')
 
-lite_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon2.png'))
-art2_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart2.png'))
-icon4_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon4.png'))
-art3_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart3.png'))
-icon5_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon5.png'))
-icon6_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon6.png'))
-icon7_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon7.png'))
-art7_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart7.png'))
-icon8_icon = xbmc.translatePath(os.path.join(plugin_path, 'icon8.png'))
-art8_icon = xbmc.translatePath(os.path.join(plugin_path, 'fanart8.png'))
-dbg = 1
+lite_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon2.png'))
+art2_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'fanart2.png'))
+icon4_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon4.png'))
+art3_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'fanart3.png'))
+icon5_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon5.png'))
+icon6_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon6.png'))
+icon7_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon7.png'))
+art7_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'fanart7.png'))
+icon8_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'icon8.png'))
+art8_icon = xbmcvfs.translatePath(os.path.join(plugin_path, 'fanart8.png'))
+dbg = 0
 
 pluginhandle = int(sys.argv[1])
 
