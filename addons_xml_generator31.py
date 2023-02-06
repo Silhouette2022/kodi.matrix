@@ -127,12 +127,12 @@ class Generator:
  
     def _generate_zips_md5( self ):
         # addon list
-        addons = os.listdir( "./repo/" )
+        addons = os.listdir( "./source/repo/" )
         #print addons
         # loop thru and add each addons addon.xml file
         for addon in addons:
             try:
-                addon = "./repo/"+addon
+                addon = "./source/repo/"+addon
                 #print addon
                 if ( not os.path.isdir( addon ) or addon == ".svn" ): continue
                 # create path
