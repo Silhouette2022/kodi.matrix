@@ -55,7 +55,7 @@
 		<dir minversion="19.0.0">
             <info compressed="false">https://raw.github.com/Silhouette2022/kodi.matrix/master/addons.xml</info>
             <checksum>https://raw.github.com/Silhouette2022/kodi.matrix/master/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.github.com/Silhouette2022/kodi.matrix/master/repo/</datadir>
+            <datadir zip="true">https://raw.github.com/Silhouette2022/kodi.matrix/master/source/repo/</datadir>
 		</dir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
