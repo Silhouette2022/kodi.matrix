@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.3.1
+# Rev. 0.3.2
 
 import xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
 import urllib.request, urllib.parse, urllib.error
@@ -363,11 +363,28 @@ def get_hatkora(url):
 #    dbg_log(str(result))
 #    sources = re.compile(b"src:{hls:\'(.*?)\'},backupSrc:{hls:\'(.*?)\'}}").findall(result)
     sources = re.compile(b"src:{hls:\'(.*?)\'}").findall(result)
+    bksources = re.compile(b"backupSrc:{hls:\'(.*?)\'}").findall(result)
     dbg_log(str(sources))
+    dbg_log(str(bksources))
     if len(sources) > 0 :
-        return sources[0].decode()
+        m3u8url = sources[0].decode()
+    elif len(bksources) > 0 :
+        m3u8url = bksources[0].decode()
     else:
-        return None
+        m3u8url = None
+    
+    if m3u8url != None:
+        if not m3u8url.startswith('http'): m3u8url = 'https:' + m3u8url
+        result = get_url(m3u8url)
+        dbg_log(str(result))
+        resolutions = re.compile(b"(.*?)\.m3u8").findall(result)
+        if len(resolutions) > 0 : 
+            m3u8res = resolutions[len(resolutions) - 1].decode().strip("\t\n ")
+            dbg_log(str(m3u8res))
+            m3u8url = m3u8url.replace("0.m3u8", m3u8res + ".m3u8")
+    
+    dbg_log("return - " + str(m3u8url))
+    return m3u8url
 
 def OMM_top():
     dbg_log('-OMM_top:' + '\n')
