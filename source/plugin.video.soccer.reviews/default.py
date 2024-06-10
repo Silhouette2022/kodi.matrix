@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.3.2
+# Rev. 0.4.0
 
 import xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
 import urllib.request, urllib.parse, urllib.error
 import os, re, sys, json
 from bs4 import BeautifulSoup
+#from yt_dlp 
 import YDStreamExtractor
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.soccer.reviews')
@@ -335,6 +336,8 @@ def GTV_play(url, title, resolve = False):
     
     if url.find('videohatkora') > -1:
         uri = get_hatkora(url)
+    elif url.find('gol248') > -1:
+        uri = get_gol248(url)        
     else:
         uri = get_YTD(url)
 
@@ -354,6 +357,25 @@ def GTV_play(url, title, resolve = False):
             item.setInfo(type='Video', infoLabels={'title': name})
             item.setProperty('IsPlayable', 'true')
             sPlayer.play(uri, item)    
+
+def get_gol248(url):
+    dbg_log('-get_gol248:' + '\n')
+    if not url.startswith('http'): url = 'https:' + url
+    dbg_log('- url-in:' + url + '\n')
+    result = get_url(url, referrer = 'https://gooool365.org/')
+#    dbg_log(str(result))
+#    sources = re.compile(b"src:{hls:\'(.*?)\'},backupSrc:{hls:\'(.*?)\'}}").findall(result)
+    sources = re.compile(b"file:\'(.*?)\'}").findall(result)
+#    bksources = re.compile(b"backupSrc:{hls:\'(.*?)\'}").findall(result)
+    dbg_log(str(sources))
+ #   dbg_log(str(bksources))
+    if len(sources) > 0 :
+        m3u8url = sources[0].decode()
+    else:
+        m3u8url = None
+    
+    dbg_log("return - " + str(m3u8url))
+    return m3u8url
     
 def get_hatkora(url):
     dbg_log('-get_hatkora:' + '\n')
@@ -671,9 +693,10 @@ def get_VK(url, n = 0):
 
 def get_YTD(url):
 
+    dbg_log('- YTD: \n')
+    dbg_log(' url = ' + url)
     vid = YDStreamExtractor.getVideoInfo(url, resolve_redirects=True)
 
-    dbg_log('- YTD: \n')
     if vid:
         dbg_log('- YTD: Try\n')
         stream_url = vid.streamURL()
