@@ -1,21 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.soccer.reviews" name="Футбольные обзоры 2.0" version="0.4.1" provider-name="Silhouette">
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.soccer.reviews"
+       name="Футбольные обзоры 2.0"
+       version="0.4.1"
+       provider-name="Silhouette">
+
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.beautifulsoup4" version="4.9.3"/>
     <import addon="script.module.simplejson" version="3.3.0"/>
     <import addon="script.module.youtube.dl" version="21.303.0"/>
   </requires>
-  <extension point="xbmc.python.pluginsource"  provides="video" library="default.py">
+
+  <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>video</provides>
   </extension>
+
   <extension point="xbmc.addon.metadata">
-    <summary></summary>
-    <description></description>
+    <summary/>
+    <description/>
     <platform>all</platform>
     <assets>
       <icon>icon.png</icon>
       <fanart>fanart.jpg</fanart>
     </assets>
   </extension>
+
 </addon>
