@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.4.0
+# Rev. 0.4.1
 
 import xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
 import urllib.request, urllib.parse, urllib.error
@@ -43,6 +43,9 @@ slw_hl_pg = slw_start + "/reviews/page/"
 
 omm_start = "https://ourmatch.me"
 
+import ssl
+# Create a default context, then disable SSL certificate verification
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def dbg_log(line):
     if dbg: xbmc.log(line)
