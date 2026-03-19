@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Writer (c) 2022, Silhouette, E-mail: 
-# Rev. 0.4.1
+# Rev. 0.4.2
 
 import xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
 import urllib.request, urllib.parse, urllib.error
@@ -293,13 +293,11 @@ def GTV_show(url, name):
     dbg_log('- name:' + name)
 
     http = get_url(url)
-
-    scripts = re.compile('ajax\({(.*?)}').findall(str(http))
-    dbg_log(str(scripts))
-    if len(scripts) > 0:
-        script = str(scripts[0]).replace('\\n', ' ').replace('\\t', ' ').replace("\\'", "'")
+    if 1:
+        script = str(http).replace('\\n', ' ').replace('\\t', ' ').replace("\\'", "'")
         dbg_log(str(script))
-        newsid = re.compile("newsid: '(.*?)'").findall(str(script))
+        newsid = re.compile("'newsid': '(.*?)'").findall(str(script))
+        dbg_log(str(newsid))
         if len(newsid) > 0:
             dbg_log(str(newsid))
             pdata = { 'dp' : 'block',

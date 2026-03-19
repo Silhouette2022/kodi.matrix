@@ -25,7 +25,7 @@
 
 <addon id="plugin.video.soccer.reviews"
        name="Футбольные обзоры 2.0"
-       version="0.4.1"
+       version="0.4.2"
        provider-name="Silhouette">
 
   <requires>
